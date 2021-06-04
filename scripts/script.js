@@ -21,6 +21,8 @@ let downloadBtn = document.querySelector(".fa-download");
 let clipBoard = document.querySelector(".fa-clipboard");
 let uploadBtn = document.querySelector('.fa-upload');
 let lightMode = document.querySelector('.fa-sun');
+let rightPanel = document.querySelector('.right-panel');
+let plusBtn = document.querySelector('.fa-plus');
 // let undoMemory = [];
 let undoMemory = boardMemory[0].undoMemory;
 // let undoIndex = -1;
@@ -39,6 +41,15 @@ let zoomLevel = 1;
 let lastSelectedColor; //variable for previous seleced color of penc 
 let selectedColor = "black"; //to track color of current selected color
 //**********************************************************************//
+
+
+// ********************Plus**Btn********************//
+plusBtn.addEventListener('click',function(){
+    rightPanel.classList.toggle('right-panel-hidden');
+});
+
+//**********************************************//
+
 
 //*********************Light/Dark Mode*******************/
 lightMode.addEventListener('click',function(){
