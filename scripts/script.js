@@ -1,5 +1,6 @@
 //********************VARIABLES STARTS**************************//
-let index;
+
+let index = 0; //Global index whick kept changing on changing of page/sheet
 let bars = document.querySelector(".bars");
 let tools = document.querySelector(".tools");
 let board = document.querySelector(".board");
@@ -20,577 +21,498 @@ let redoBtn = document.querySelector(".fa-redo");
 let undoBtn = document.querySelector(".fa-undo");
 let downloadBtn = document.querySelector(".fa-download");
 let clipBoard = document.querySelector(".fa-clipboard");
-let uploadBtn = document.querySelector('.fa-upload');
-let lightMode = document.querySelector('.fa-sun');
-let rightPanel = document.querySelector('.right-panel');
-let newPage = document.querySelector('.fa-file');
-let plusBtn = document.querySelector('.fa-plus');
-let pageContainer = document.querySelector('.page-container');
-
-// let undoMemory = [];
-let undoMemory = boardMemory[0].undoMemory;
-// let undoIndex = -1;
-let undoIndex = boardMemory[0].undoIndex;
-// let memory = [];
-let memory = boardMemory[0].memory;
-// let memoryIndex = -1;
-let memoryIndex = boardMemory[0].memoryIndex;
-// let redoMemory = [];
-let redoMemory = boardMemory[0].redoMemory;
-// let redoIndex = -1;
-let redoIndex = boardMemory[0].redoIndex;
+let uploadBtn = document.querySelector(".fa-upload");
+let lightMode = document.querySelector(".fa-sun");
+let rightPanel = document.querySelector(".right-panel");
+let newPage = document.querySelector(".fa-file");
+let plusBtn = document.querySelector(".fa-plus");
+let pageContainer = document.querySelector(".page-container");
+let undoMemory = boardMemory[index].undoMemory;
+let undoIndex = boardMemory[index].undoIndex;
+let memory = boardMemory[index].memory;
+let memoryIndex = boardMemory[index].memoryIndex;
+let redoMemory = boardMemory[index].redoMemory;
+let redoIndex = boardMemory[index].redoIndex;
 let zoomInBtn = document.querySelector(".fa-search-plus");
 let zoomOutBtn = document.querySelector(".fa-search-minus");
 let zoomLevel = 1;
-let lastSelectedColor; //variable for previous seleced color of penc 
+let lastSelectedColor; //variable for previous seleced color of penc
 let selectedColor = "black"; //to track color of current selected color
+
 //**********************************************************************//
 
 //********************PAGE and PlusBtn Functionality**********//
-plusBtn.addEventListener('click',function(){
-    count++;
-    let div = pageCreator();
-    pageContainer.appendChild(div);
-    let pagesArr = document.querySelectorAll('.page');
-    for(let i = 0; i < pagesArr.length; i++){
-    pagesArr[i].addEventListener('click',function(e){
-        // console.log();
-        index = e.currentTarget.getAttribute('number');
-        console.log(index);
+plusBtn.addEventListener("click", function () {
+  count++;
+  let div = pageCreator();
+  pageContainer.appendChild(div);
+  let pagesArr = document.querySelectorAll(".page");
+  for (let i = 0; i < pagesArr.length; i++) {
+    pagesArr[i].addEventListener("click", function (e) {
+      index = e.currentTarget.getAttribute("number");
+      console.log(index);
+      draw();
     });
-    }
-    
+  }
 });
-
-
-
 //**********************************************//
-
-
 
 // ********************page**Btn********************//
-newPage.addEventListener('click',function(){
-    rightPanel.classList.toggle('right-panel-hidden');
+newPage.addEventListener("click", function () {
+  rightPanel.classList.toggle("right-panel-hidden");
 });
-
 //**********************************************//
 
-
-//*********************Light/Dark Mode*******************/
-lightMode.addEventListener('click',function(){
-    lightMode.classList.toggle('on');
-    tool.fillStyle = "#fff";
-    tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
-    draw();
+//******************Light/Dark Mode*******************/
+lightMode.addEventListener("click", function () {
+  lightMode.classList.toggle("on");
+  tool.fillStyle = "#fff";
+  tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  draw();
 });
-
 //************************************************/
+
 //*********to change selecte tool color********//
 for (let i = 0; i < fas.length; i++) {
-    fas[i].addEventListener("click", function (e) {
-        for (let i = 0; i < fas.length; i++) {
-            fas[i].classList.remove("tool-active");
-        }
-        e.target.classList.add("tool-active");
-    });
+  fas[i].addEventListener("click", function (e) {
+    for (let i = 0; i < fas.length; i++) {
+      fas[i].classList.remove("tool-active");
+    }
+    e.target.classList.add("tool-active");
+  });
 }
 //**********************************************//
 
-//*******************ANIMATION************************/
+//*******************ANIMATION of Bars*********************/
 bars.addEventListener("click", function () {
-    bars.classList.toggle("change");
-    tools.classList.toggle("tools-inactive");
+  bars.classList.toggle("change");
+  tools.classList.toggle("tools-inactive");
 });
 //********************************************************/
-
 
 board.height = window.innerHeight;
 board.width = window.innerWidth;
 let tool = board.getContext("2d");
 window.addEventListener("resize", function () {
-    board.height = window.innerHeight;
-    board.width = window.innerWidth;
-    draw();
+  board.height = window.innerHeight;
+  board.width = window.innerWidth;
+  draw();
 });
 draw();
 // ========================Draw starts================
 function draw() {
-    if(lightMode.classList.contains('on')){
-        tool.fillStyle = "#fff";
-        tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
-        console.log("ligh");
-    }
-    else{
-        tool.fillStyle = "#333";
-        tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
-        console.log("dark");
-    }
-    // tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
-    // drawing image on canvas from memory
-    for (let i = 0; i <= boardMemory[0].memoryIndex; i++) {
-        console.log("drawn");
-        tool.putImageData(boardMemory[0].memory[i], 0, 0);
-    }
-    tool.lineCap = 'round';
-    tool.strokeStyle = selectedColor;
-    tool.lineWidth = 3;
+  if (lightMode.classList.contains("on")) {
+    tool.fillStyle = "#fff";
+    tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    console.log("ligh");
+  } else {
+    tool.fillStyle = "#333";
+    tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    console.log("dark");
+  }
+  // tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
+  // drawing image on canvas from memory
+  for (let i = 0; i <= boardMemory[index].memoryIndex; i++) {
+    console.log("drawn");
+    console.log(index);
+    tool.putImageData(boardMemory[index].memory[i], 0, 0);
+  }
+  tool.lineCap = "round";
+  tool.strokeStyle = selectedColor;
+  tool.lineWidth = 3;
 }
-
 // =========================================================////
-
 
 //-------------------pencil and eraser ----------------------////
 pencil.addEventListener("click", function () {
-    colorPicker.classList.add("unhide");
-    widthBox.classList.add("unhide");
-    eraserWidthBox.classList.remove("unhide");
-    tool.lineWidth = pencilSlider.value;
-    if (selectedColor == "#333") {
-        console.log(selectedColor);
-        selectedColor = lastSelectedColor;
-        tool.strokeStyle = selectedColor;
-    }
+  colorPicker.classList.add("unhide");
+  widthBox.classList.add("unhide");
+  eraserWidthBox.classList.remove("unhide");
+  tool.lineWidth = pencilSlider.value;
+  if (selectedColor == "#333") {
+    console.log(selectedColor);
+    selectedColor = lastSelectedColor;
+    tool.strokeStyle = selectedColor;
+  }
 });
-
 
 redColor.addEventListener("click", function () {
-    selectedColor = "#eb3b5a";
-    lastSelectedColor = "#eb3b5a";
-    tool.strokeStyle = selectedColor;
-    // tool.strokeStyle = "#eb3b5a";
+  selectedColor = "#eb3b5a";
+  lastSelectedColor = "#eb3b5a";
+  tool.strokeStyle = selectedColor;
 });
-
 
 greenColor.addEventListener("click", function () {
-    selectedColor = "#20bf6b";
-    lastSelectedColor = "#20bf6b";
-    tool.strokeStyle = selectedColor;
-    // tool.strokeStyle = "#20bf6b";
+  selectedColor = "#20bf6b";
+  lastSelectedColor = "#20bf6b";
+  tool.strokeStyle = selectedColor;
 });
-
 
 blueColor.addEventListener("click", function () {
-    selectedColor = "#45aaf2";
-    lastSelectedColor = "#45aaf2";
-    tool.strokeStyle = selectedColor;
-    // tool.strokeStyle = "#45aaf2";
+  selectedColor = "#45aaf2";
+  lastSelectedColor = "#45aaf2";
+  tool.strokeStyle = selectedColor;
 });
-
 
 blackColor.addEventListener("click", function () {
-    selectedColor = "black";
-    lastSelectedColor = "black";
-    tool.strokeStyle = selectedColor;
-    // tool.strokeStyle = "black";
+  selectedColor = "black";
+  lastSelectedColor = "black";
+  tool.strokeStyle = selectedColor;
 });
-
 
 yellowColor.addEventListener("click", function () {
-    selectedColor = "#fed330";
-    lastSelectedColor = "#fed330";
-    tool.strokeStyle = selectedColor;
-    // tool.strokeStyle = "#fed330";
+  selectedColor = "#fed330";
+  lastSelectedColor = "#fed330";
+  tool.strokeStyle = selectedColor;
 });
-
 
 pencilSlider.addEventListener("change", function () {
-    tool.lineWidth = pencilSlider.value
+  tool.lineWidth = pencilSlider.value;
 });
-
 
 pencil.addEventListener("dblclick", function () {
-    colorPicker.classList.remove("unhide");
-    widthBox.classList.remove("unhide");
+  colorPicker.classList.remove("unhide");
+  widthBox.classList.remove("unhide");
 });
-
 
 eraser.addEventListener("click", function () {
-    activeTool = "eraser";
-    // tool.strokeStyle = "#333";
-    if(lightMode.classList.contains('on')){
-        selectedColor = "#fff";
-    }else{
-        selectedColor = "#333";
-    }
-    // selectedColor = "#333";
-    tool.strokeStyle = selectedColor;
-    eraserWidthBox.classList.add("unhide");
-    colorPicker.classList.remove("unhide");
-    widthBox.classList.remove("unhide");
-    tool.lineWidth = eraserSlider.value;
-
+  activeTool = "eraser";
+  if (lightMode.classList.contains("on")) {
+    selectedColor = "#fff";
+  } else {
+    selectedColor = "#333";
+  }
+  tool.strokeStyle = selectedColor;
+  eraserWidthBox.classList.add("unhide");
+  colorPicker.classList.remove("unhide");
+  widthBox.classList.remove("unhide");
+  tool.lineWidth = eraserSlider.value;
 });
-
 
 eraserSlider.addEventListener("change", function () {
-    tool.lineWidth = eraserSlider.value
+  tool.lineWidth = eraserSlider.value;
 });
 
-
 eraser.addEventListener("dblclick", function () {
-    eraserWidthBox.classList.remove("unhide");
+  eraserWidthBox.classList.remove("unhide");
 });
 //------------------------------------------------------------//
 
 //----------------------------------PENCIL STROKE---------------//
 let isMouseDown = false;
 board.addEventListener("mousedown", function (e) {
-    let x = e.clientX;
-    let y = e.clientY;
-    tool.lineCap = 'round';
-    tool.beginPath();
-    tool.moveTo(x, y);
-    isMouseDown = true;
+  let x = e.clientX;
+  let y = e.clientY;
+  tool.lineCap = "round";
+  tool.beginPath();
+  tool.moveTo(x, y);
+  isMouseDown = true;
 });
-
 
 board.addEventListener("mousemove", function (e) {
-    let x = e.clientX;
-    let y = e.clientY;
-    tool.lineCap = 'round';
+  let x = e.clientX;
+  let y = e.clientY;
+  tool.lineCap = "round";
 
-    if (isMouseDown == true) {
-        tool.lineTo(x, y);
-        tool.stroke();
-    }
-});
-
-
-board.addEventListener("mouseup", function (e) {
-    let x = e.clientX;
-    let y = e.clientY;
-    tool.lineCap = 'round';
+  if (isMouseDown == true) {
     tool.lineTo(x, y);
     tool.stroke();
-    // tool.closePath();
-    isMouseDown = false;
-    if (e.type != "mouseout") {
-        console.log("added");
-        // memory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        boardMemory[0].memory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        // memoryIndex++;
-        boardMemory[0].memoryIndex++;
-        // undoMemory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        boardMemory[0].undoMemory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        // undoIndex++;
-        boardMemory[0].undoIndex++;
-    }
-    console.log(boardMemory[0].memory);
-    console.log(boardMemory[0].undoMemory);
+  }
+});
 
-
+board.addEventListener("mouseup", function (e) {
+  let x = e.clientX;
+  let y = e.clientY;
+  tool.lineCap = "round";
+  tool.lineTo(x, y);
+  tool.stroke();
+  // tool.closePath();
+  isMouseDown = false;
+  if (e.type != "mouseout") {
+    console.log("added");
+    boardMemory[index].memory.push(
+      tool.getImageData(0, 0, window.innerWidth, window.innerHeight)
+    );
+    boardMemory[index].memoryIndex++;
+    boardMemory[index].undoMemory.push(
+      tool.getImageData(0, 0, window.innerWidth, window.innerHeight)
+    );
+    boardMemory[index].undoIndex++;
+    console.log(boardMemory);
+  }
 });
 //----------------------------------PENCIL STROKE END---------------//
 
-
 //------------------DOWNLOAD BTN START----------------
 downloadBtn.addEventListener("click", function () {
-    let a = document.createElement("a");
-    let url = board.toDataURL("image/png");
-    a.href = url;
-    a.download = "file.png";
-    a.click();
-    a.remove();
+  let a = document.createElement("a");
+  let url = board.toDataURL("image/png");
+  a.href = url;
+  a.download = "file.png";
+  a.click();
+  a.remove();
 });
 //---------------------------------------------------//
 
-
 //-------------------------CLEAR CANVAS FNCTN START--------------------//
 function clearCanvas() {
-    if(lightMode.classList.contains('on')){
-        tool.fillStyle = "#fff";
-    }
-    else{
-        tool.fillStyle = "#333";
-    }
-    tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    // undoMemory = [];
-    boardMemory[0].undoMemory = [];
-    // undoIndex = -1;
-    boardMemory[0].undoIndex = -1;
-    // memory = [];
-    boardMemory[0].memory = [];
-    // memoryIndex = -1;
-    boardMemory[0].memoryIndex = -1;
+  if (lightMode.classList.contains("on")) {
+    tool.fillStyle = "#fff";
+  } else {
+    tool.fillStyle = "#333";
+  }
+  tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
+  boardMemory[index].undoMemory = [];
+  boardMemory[index].undoIndex = -1;
+  boardMemory[index].memory = [];
+  boardMemory[index].memoryIndex = -1;
 }
 //-------------------------------------------------------------//
 
 // ==============================UNDOBTN STARTS=================//
 undoBtn.addEventListener("click", function () {
-    // if (undoIndex < 0) {
-    if (boardMemory[0].undoIndex < 0) {
-        clearCanvas();
-    }
-    // else if (undoIndex == 0) {
-    else if (boardMemory[0].undoIndex == 0) {
-        // redoMemory.push(undoMemory.pop());
-        boardMemory[0].redoMemory.push(boardMemory[0].undoMemory.pop());
-        // redoIndex++;
-        boardMemory[0].redoIndex++;
-        clearCanvas();
-    }
-    else {
-        console.log("deleted");
-        console.log(boardMemory);
-        // memoryIndex--;
-        boardMemory[0].memoryIndex--;
-        // memory.pop();
-        boardMemory[0].memory.pop();
-        // undoIndex--;
-        boardMemory[0].undoIndex--;
-        // redoMemory.push(undoMemory.pop());
-        boardMemory[0].redoMemory.push(boardMemory[0].undoMemory.pop());
-        // redoIndex++;
-        boardMemory[0].redoIndex++;
-        // tool.putImageData(undoMemory[undoIndex], 0, 0);
-        tool.putImageData(boardMemory[0].undoMemory[boardMemory[0].undoIndex], 0, 0);
-    }
-})
+  if (boardMemory[index].undoIndex < 0) {
+    console.log(boardMemory);
+    clearCanvas();
+  } else if (boardMemory[index].undoIndex == 0) {
+    boardMemory[index].redoMemory.push(boardMemory[index].undoMemory.pop());
+    boardMemory[index].redoIndex++;
+    console.log(boardMemory);
+    clearCanvas();
+  } else {
+    console.log("deleted");
+
+    boardMemory[index].memoryIndex--;
+    boardMemory[index].memory.pop();
+    boardMemory[index].undoIndex--;
+    boardMemory[index].redoMemory.push(boardMemory[index].undoMemory.pop());
+    boardMemory[index].redoIndex++;
+    console.log(boardMemory);
+    tool.putImageData(
+      boardMemory[index].undoMemory[boardMemory[index].undoIndex],
+      0,
+      0
+    );
+  }
+});
 // ========================================================//
 
 // ===============================redo btn start===========//
 redoBtn.addEventListener("click", function () {
-    // if (redoIndex < 0) {
-    if (boardMemory[0].redoIndex < 0) {
-        draw();
-        //    alert("cant redo further")
-    }
-    else {
-        console.log("redo");
-        console.log(boardMemory);
-        // tool.putImageData(redoMemory[redoIndex], 0, 0);
-        tool.putImageData(boardMemory[0].redoMemory[boardMemory[0].redoIndex], 0, 0);
-        // redoIndex--;
-        boardMemory[0].redoIndex--;
-        // let val = redoMemory.pop();
-        let val = boardMemory[0].redoMemory.pop();
-        // undoMemory.push(val);
-        boardMemory[0].undoMemory.push(val);
-        // undoIndex++;
-        boardMemory[0].undoIndex++;
-        // memory.push(val);
-        boardMemory[0].memory.push(val);
-        // memoryIndex++;
-        boardMemory[0].memoryIndex++;
-    }
+  if (boardMemory[index].redoIndex < 0) {
+    console.log(boardMemory);
+    draw();
+  } else {
+    console.log("redo");
+    tool.putImageData(
+      boardMemory[index].redoMemory[boardMemory[index].redoIndex],
+      0,
+      0
+    );
+    boardMemory[index].redoIndex--;
+    let val = boardMemory[index].redoMemory.pop();
+    boardMemory[index].undoMemory.push(val);
+    boardMemory[index].undoIndex++;
+    boardMemory[index].memory.push(val);
+    boardMemory[index].memoryIndex++;
+    console.log(boardMemory);
+  }
 });
 // =====================================================//
 
-
 // ======================ZOOMIN BTN===============================//
 zoomInBtn.addEventListener("click", function () {
-    if (zoomLevel < 2) {
-        zoomLevel += 0.1;
-        console.log("zoomed-in");
-        // board.style.zIndex = "-1";
-        tools.style.zIndex = "5";
-        bars.style.zIndex = "5";
-        board.style.transform = `scale(${zoomLevel})`;
-    }
-})
+  if (zoomLevel < 2) {
+    zoomLevel += 0.1;
+    console.log("zoomed-in");
+    tools.style.zIndex = "5";
+    bars.style.zIndex = "5";
+    board.style.transform = `scale(${zoomLevel})`;
+  }
+});
 // ==============================================================//
-
-
 
 //======================ZOOM_OUT_START============================//
 zoomOutBtn.addEventListener("click", function () {
-    if (zoomLevel > 1) {
-        zoomLevel -= 0.1;
-        tools.style.zIndex = "5";
-        bars.style.zIndex = "5";
-        console.log("zoomed-out");
-        board.style.transform = `scale(${zoomLevel})`;
-    }
-})
+  if (zoomLevel > 1) {
+    zoomLevel -= 0.1;
+    tools.style.zIndex = "5";
+    bars.style.zIndex = "5";
+    console.log("zoomed-out");
+    board.style.transform = `scale(${zoomLevel})`;
+  }
+});
 //===============================================================//
 
-
 //***************************STICKY***********************//
-clipBoard.addEventListener("click",function(){
-    stickyContainer.classList.toggle("sticky-gone");
+clipBoard.addEventListener("click", function () {
+  stickyContainer.classList.toggle("sticky-gone");
 });
 let remove = document.querySelector(".remove");
 let sticky = document.querySelector(".sticky");
 let minimize = document.querySelector(".minimize");
 let stickyContainer = document.querySelector(".sticky-container");
-// let bcg = document.querySelector(".bcg");
 dragElement(stickyContainer);
 
 remove.addEventListener("click", function () {
-    stickyContainer.classList.toggle("sticky-gone");
+  stickyContainer.classList.toggle("sticky-gone");
 });
 
 minimize.addEventListener("click", function () {
-    sticky.classList.toggle("sticky-hidden");
-    stickyContainer.classList.toggle("sticky-container-hide");
+  sticky.classList.toggle("sticky-hidden");
+  stickyContainer.classList.toggle("sticky-container-hide");
 });
 
 function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (document.querySelector(".sticky-header")) {
-        /* if present, the header is where you move the DIV from:*/
-        document.querySelector(".sticky-header").onmousedown = dragMouseDown;
-    }
-    //  else {
-    //     /* otherwise, move the DIV from anywhere inside the DIV:*/
-    //     elmnt.onmousedown = dragMouseDown;
-    // }
+  var pos1 = 0,
+    pos2 = 0,
+    pos3 = 0,
+    pos4 = 0;
+  if (document.querySelector(".sticky-header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.querySelector(".sticky-header").onmousedown = dragMouseDown;
+  }
 
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-    }
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
 
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+    elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+  }
 
-    function closeDragElement() {
-        /* stop moving when mouse button is released:*/
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
 }
 //******************************************************//
 
 //*************IMG UPLOAD***************//
 
-
-let imgContainer = document.querySelector('.img-container');
-function CreateImgContainer(){
-    // let imgContainer = document.createElement('div');
-    // imgContainer.classList.add('img-container');
-    let imgHeader = document.createElement('div');
-    imgHeader.classList.add('img-header');
-    let removeImg = document.createElement('div');
-    removeImg.classList.add('remove-img');
-    let minimizeImg = document.createElement('div');
-    minimizeImg.classList.add('minimize-img');
-    imgHeader.appendChild(removeImg);
-    imgHeader.appendChild(minimizeImg);
-    let imageDivContainer = document.createElement('div');
-    imageDivContainer.classList.add('image-div-container');
-    let picture = document.createElement('img');
-    picture.classList.add('picture');
-    picture.setAttribute('alt','');
-    imageDivContainer.appendChild(picture);
-    imgContainer.appendChild(imgHeader);
-    imgContainer.appendChild(imageDivContainer);
-    console.log(imgContainer);
-    document.body.appendChild(imgContainer);
+let imgContainer = document.querySelector(".img-container");
+function CreateImgContainer() {
+  let imgHeader = document.createElement("div");
+  imgHeader.classList.add("img-header");
+  let removeImg = document.createElement("div");
+  removeImg.classList.add("remove-img");
+  let minimizeImg = document.createElement("div");
+  minimizeImg.classList.add("minimize-img");
+  imgHeader.appendChild(removeImg);
+  imgHeader.appendChild(minimizeImg);
+  let imageDivContainer = document.createElement("div");
+  imageDivContainer.classList.add("image-div-container");
+  let picture = document.createElement("img");
+  picture.classList.add("picture");
+  picture.setAttribute("alt", "");
+  imageDivContainer.appendChild(picture);
+  imgContainer.appendChild(imgHeader);
+  imgContainer.appendChild(imageDivContainer);
+  console.log(imgContainer);
+  document.body.appendChild(imgContainer);
 }
-let uplaodPic = document.querySelector('.pic');
+let uplaodPic = document.querySelector(".pic");
 
-uploadBtn.addEventListener('click',function(){
-    uplaodPic.click();
-    uplaodPic.addEventListener('change',function(){
-        let file = uplaodPic.files[0];
-        if(file){
-            let reader = new FileReader();
-            reader.onload = function(){
-                let result = reader.result;
-                console.log(result);
-                picture.src = result;
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-    CreateImgContainer();
-    
-    imgContainer.classList.toggle('img-gone');
+uploadBtn.addEventListener("click", function () {
+  uplaodPic.click();
+  uplaodPic.addEventListener("change", function () {
+    let file = uplaodPic.files[0];
+    if (file) {
+      let reader = new FileReader();
+      reader.onload = function () {
+        let result = reader.result;
+        console.log(result);
+        picture.src = result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  CreateImgContainer();
 
-    let removeImg = document.querySelector('.remove-img');
-    removeImg.addEventListener("click", function () {
-        imgContainer.classList.toggle("img-gone");
-        // console.log("gyaya")
-    });
+  imgContainer.classList.toggle("img-gone");
 
-    let picture = document.querySelector(' .picture');
-    // console.log(picture);
-    let minimizeImg = document.querySelector('.minimize-img');
-    // console.log(minimizeImg);
+  let removeImg = document.querySelector(".remove-img");
+  removeImg.addEventListener("click", function () {
+    imgContainer.classList.toggle("img-gone");
+  });
 
-    minimizeImg.addEventListener("click", function () {
-        picture.classList.toggle("img-hidden");
-        imgContainer.classList.toggle("img-container-hide");
+  let picture = document.querySelector(" .picture");
+  let minimizeImg = document.querySelector(".minimize-img");
+  minimizeImg.addEventListener("click", function () {
+    picture.classList.toggle("img-hidden");
+    imgContainer.classList.toggle("img-container-hide");
+  });
 
-    });
+  dragElement(imgContainer);
 
-
-
-    dragElement(imgContainer);
-
-     function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  function dragElement(elmnt) {
+    var pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
     if (document.querySelector(".img-header")) {
-        /* if present, the header is where you move the DIV from:*/
-        document.querySelector(".img-header").onmousedown = dragMouseDown;
+      /* if present, the header is where you move the DIV from:*/
+      document.querySelector(".img-header").onmousedown = dragMouseDown;
     }
 
     function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
     }
 
     function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      e = e || window.event;
+      e.preventDefault();
+      // calculate the new cursor position:
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      // set the element's new position:
+      elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+      elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
     }
 
     function closeDragElement() {
-        /* stop moving when mouse button is released:*/
-        document.onmouseup = null;
-        document.onmousemove = null;
+      /* stop moving when mouse button is released:*/
+      document.onmouseup = null;
+      document.onmousemove = null;
     }
-     }
+  }
 });
 
 //**************************************//
 
-
-
-
 //**************PAGE CREATOR*********************//
-function pageCreator(){
-    let div = document.createElement('div');
-    div.classList.add('page');
-    let num = `${count}`;
-    div.setAttribute('number',num);
-    div.innerText = `Page-${count+1}`;
-    return div;
+function pageCreator() {
+  let div = document.createElement("div");
+  div.classList.add("page");
+  let num = `${count}`;
+  div.setAttribute("number", num);
+  div.innerText = `Page-${count + 1}`;
+  return div;
 }
 //**************************************//
-
-
-console.log(boardMemory);
-
-
