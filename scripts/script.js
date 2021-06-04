@@ -21,12 +21,18 @@ let downloadBtn = document.querySelector(".fa-download");
 let clipBoard = document.querySelector(".fa-clipboard");
 let uploadBtn = document.querySelector('.fa-upload');
 let lightMode = document.querySelector('.fa-sun');
-let undoMemory = [];
-let undoIndex = -1;
-let memory = [];
-let memoryIndex = -1;
-let redoMemory = [];
-let redoIndex = -1;
+// let undoMemory = [];
+let undoMemory = boardMemory[0].undoMemory;
+// let undoIndex = -1;
+let undoIndex = boardMemory[0].undoIndex;
+// let memory = [];
+let memory = boardMemory[0].memory;
+// let memoryIndex = -1;
+let memoryIndex = boardMemory[0].memoryIndex;
+// let redoMemory = [];
+let redoMemory = boardMemory[0].redoMemory;
+// let redoIndex = -1;
+let redoIndex = boardMemory[0].redoIndex;
 let zoomInBtn = document.querySelector(".fa-search-plus");
 let zoomOutBtn = document.querySelector(".fa-search-minus");
 let zoomLevel = 1;
@@ -84,10 +90,12 @@ function draw() {
         console.log("dark");
     }
     // tool.fillRect(0, 0, window.innerWidth,window.innerHeight);
-    for (let i = 0; i <= memoryIndex; i++) {
+    // drawing image on canvas from memory
+    for (let i = 0; i <= boardMemory[0].memoryIndex; i++) {
         console.log("drawn");
-        tool.putImageData(memory[i], 0, 0);
+        tool.putImageData(boardMemory[0].memory[i], 0, 0);
     }
+    tool.lineCap = 'round';
     tool.strokeStyle = selectedColor;
     tool.lineWidth = 3;
 }
@@ -193,6 +201,7 @@ let isMouseDown = false;
 board.addEventListener("mousedown", function (e) {
     let x = e.clientX;
     let y = e.clientY;
+    tool.lineCap = 'round';
     tool.beginPath();
     tool.moveTo(x, y);
     isMouseDown = true;
@@ -200,7 +209,7 @@ board.addEventListener("mousedown", function (e) {
 board.addEventListener("mousemove", function (e) {
     let x = e.clientX;
     let y = e.clientY;
-
+    tool.lineCap = 'round';
 
     if (isMouseDown == true) {
         tool.lineTo(x, y);
@@ -210,19 +219,24 @@ board.addEventListener("mousemove", function (e) {
 board.addEventListener("mouseup", function (e) {
     let x = e.clientX;
     let y = e.clientY;
+    tool.lineCap = 'round';
     tool.lineTo(x, y);
     tool.stroke();
     // tool.closePath();
     isMouseDown = false;
     if (e.type != "mouseout") {
         console.log("added");
-        memory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        memoryIndex++;
-        undoMemory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
-        undoIndex++;
+        // memory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
+        boardMemory[0].memory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
+        // memoryIndex++;
+        boardMemory[0].memoryIndex++;
+        // undoMemory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
+        boardMemory[0].undoMemory.push(tool.getImageData(0, 0, window.innerWidth, window.innerHeight));
+        // undoIndex++;
+        boardMemory[0].undoIndex++;
     }
-    console.log(memory);
-    console.log(undoMemory);
+    console.log(boardMemory[0].memory);
+    console.log(boardMemory[0].undoMemory);
 
 
 });
@@ -250,54 +264,72 @@ function clearCanvas() {
         tool.fillStyle = "#333";
     }
     tool.fillRect(0, 0, window.innerWidth, window.innerHeight);
-    undoMemory = [];
-    undoIndex = -1;
-    memory = [];
-    memoryIndex = -1;
+    // undoMemory = [];
+    boardMemory[0].undoMemory = [];
+    // undoIndex = -1;
+    boardMemory[0].undoIndex = -1;
+    // memory = [];
+    boardMemory[0].memory = [];
+    // memoryIndex = -1;
+    boardMemory[0].memoryIndex = -1;
 }
 //-------------------------------------------------------------//
 
 // ==============================UNDOBTN STARTS=================//
 undoBtn.addEventListener("click", function () {
-    if (undoIndex < 0) {
-        // undoIndex--;
-        // redoMemory.push(undoMemory.pop());
-        // redoIndex++;
+    // if (undoIndex < 0) {
+    if (boardMemory[0].undoIndex < 0) {
         clearCanvas();
     }
-    else if (undoIndex == 0) {
-        // undoIndex--;
-        redoMemory.push(undoMemory.pop());
-        redoIndex++;
+    // else if (undoIndex == 0) {
+    else if (boardMemory[0].undoIndex == 0) {
+        // redoMemory.push(undoMemory.pop());
+        boardMemory[0].redoMemory.push(undoMemory.pop());
+        // redoIndex++;
+        boardMemory[0].redoIndex++;
         clearCanvas();
     }
     else {
         console.log("deleted");
-        memoryIndex--;
-        memory.pop();
-        undoIndex--;
-        redoMemory.push(undoMemory.pop());
-        redoIndex++;
-        tool.putImageData(undoMemory[undoIndex], 0, 0);
+        // memoryIndex--;
+        boardMemory[0].memoryIndex--;
+        // memory.pop();
+        boardMemory[0].memory.pop();
+        // undoIndex--;
+        boardMemory[0].undoIndex--;
+        // redoMemory.push(undoMemory.pop());
+        boardMemory[0].redoMemory.push(undoMemory.pop());
+        // redoIndex++;
+        boardMemory[0].redoIndex++;
+        // tool.putImageData(undoMemory[undoIndex], 0, 0);
+        tool.putImageData(boardMemory[0].undoMemory[boardMemory[0].undoIndex], 0, 0);
     }
 })
 // ========================================================//
 
 // ===============================redo btn start===========//
 redoBtn.addEventListener("click", function () {
-    if (redoIndex < 0) {
+    // if (redoIndex < 0) {
+    if (boardMemory[0].redoIndex < 0) {
         draw();
         //    alert("cant redo further")
     }
     else {
         console.log("redo");
-        tool.putImageData(redoMemory[redoIndex], 0, 0);
-        redoIndex--;
-        let val = redoMemory.pop()
-        undoMemory.push(val);
-        undoIndex++;
-        memory.push(val);
-        memoryIndex++
+        // tool.putImageData(redoMemory[redoIndex], 0, 0);
+        tool.putImageData(boardMemory[0].redoMemory[boardMemory[0].redoIndex], 0, 0);
+        // redoIndex--;
+        boardMemory[0].redoIndex--;
+        // let val = redoMemory.pop();
+        let val = boardMemory[0].redoMemory.pop();
+        // undoMemory.push(val);
+        boardMemory[0].undoMemory.push(val);
+        // undoIndex++;
+        boardMemory[0].undoIndex++;
+        // memory.push(val);
+        boardMemory[0].memory.push(val);
+        // memoryIndex++;
+        boardMemory[0].memoryIndex++;
     }
 });
 // =====================================================//
@@ -500,8 +532,6 @@ uploadBtn.addEventListener('click',function(){
      }
 });
 
-
-
-
-
 //**************************************//
+
+console.log(boardMemory[0]);
