@@ -24,6 +24,7 @@ let lightMode = document.querySelector('.fa-sun');
 let rightPanel = document.querySelector('.right-panel');
 let newPage = document.querySelector('.fa-file');
 let plusBtn = document.querySelector('.fa-plus');
+let pageContainer = document.querySelector('.page-container');
 // let undoMemory = [];
 let undoMemory = boardMemory[0].undoMemory;
 // let undoIndex = -1;
@@ -111,7 +112,7 @@ function draw() {
     tool.strokeStyle = selectedColor;
     tool.lineWidth = 3;
 }
-// draw();
+
 // =========================================================////
 
 
@@ -218,6 +219,8 @@ board.addEventListener("mousedown", function (e) {
     tool.moveTo(x, y);
     isMouseDown = true;
 });
+
+
 board.addEventListener("mousemove", function (e) {
     let x = e.clientX;
     let y = e.clientY;
@@ -228,6 +231,8 @@ board.addEventListener("mousemove", function (e) {
         tool.stroke();
     }
 });
+
+
 board.addEventListener("mouseup", function (e) {
     let x = e.clientX;
     let y = e.clientY;
@@ -390,12 +395,12 @@ dragElement(stickyContainer);
 
 remove.addEventListener("click", function () {
     stickyContainer.classList.toggle("sticky-gone");
-})
+});
+
 minimize.addEventListener("click", function () {
     sticky.classList.toggle("sticky-hidden");
     stickyContainer.classList.toggle("sticky-container-hide");
-
-})
+});
 
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -548,4 +553,23 @@ uploadBtn.addEventListener('click',function(){
 
 //**************************************//
 
+
+
+
+//**************PAGE CREATOR*********************//
+function pageCreator(){
+    let div = document.createElement('div');
+    div.classList.add('page');
+    div.innerText = `Page-${count+1}`;
+    return div;
+}
+//**************************************//
+
+plusBtn.addEventListener('click',function(){
+    count++;
+    let div = pageCreator();
+    pageContainer.appendChild(div);
+});
 console.log(boardMemory);
+
+

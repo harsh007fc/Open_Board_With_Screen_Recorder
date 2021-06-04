@@ -338,9 +338,13 @@ body {
   border-radius: 1vh;
   /* border: 1px solid whitesmoke; */
   overflow-x:auto;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   flex-direction: row;
+}
+/* code to remove scroll but scroll property remains there */
+.page-container::-webkit-scrollbar{
+display: none;
 }
 .page{
   display: flex;
@@ -348,7 +352,7 @@ body {
   justify-content: center;
   color: white;
   height: 100%;
-  width: 60px;
+  min-width: 10vw;
   border-radius: 1vh;
   border: 1px solid white;
 }
