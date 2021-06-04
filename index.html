@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drawing</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+      integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style/style.css" />
+  </head>
+  <body>
+    <div class="bars">
+      <div class="bar-container">
+        <div id="bar-1" class="bar"></div>
+        <div id="bar-2" class="bar"></div>
+        <div id="bar-3" class="bar"></div>
+      </div>
+    </div>
+    <div class="tools-inactive tools">
+      <div class="tool-container">
+        <div class="tool pencil">
+          <i class="fas fa-pencil-alt"></i>
+          <div class="width-box">
+            <input
+              class="pencil-slider"
+              type="range"
+              min="3"
+              max="27"
+              step="3"
+              value="3"
+            />
+          </div>
+          <div class="color-picker">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="blue"></div>
+            <div class="black"></div>
+            <div class="yellow"></div>
+          </div>
+        </div>
+
+        <div class="tool notes">
+          <i class="fas fa-clipboard"></i>
+        </div>
+        <div class="tool download">
+          <i class="fas fa-download"></i>
+        </div>
+        <div class="tool upload">
+          <i class="fas fa-upload"></i>
+        </div>
+        <div class="tool undo">
+          <i class="fas fa-undo"></i>
+        </div>
+        <div class="tool redo">
+          <i class="fas fa-redo"></i>
+        </div>
+        <div class="tool zoom-in">
+          <i class="fas fa-search-plus"></i>
+        </div>
+        <div class="tool zoom-out">
+          <i class="fas fa-search-minus"></i>
+        </div>
+        <div class="tool eraser">
+          <i class="fas fa-eraser"></i>
+          <div class="eraser-width-box">
+            <input
+              class="eraser-slider"
+              type="range"
+              min="15"
+              max="100"
+              step="5"
+              value="15"
+            />
+          </div>
+        </div>
+        <div class="tool sheet">
+          <i class="fas fa-plus"></i>
+        </div>
+        <div class="tool recorder">
+          <i class="fas fa-desktop"></i>
+        </div>
+        <div class="tool light">
+          <i class="fas fa-sun"></i>
+        </div>
+      </div>
+    </div>
+    <canvas class="board"></canvas>
+    <!--------------------------------->
+    <div class="sticky-container sticky-gone">
+      <div class="sticky-header">
+          <div class="remove"></div>
+          <div class="minimize"></div>
+      </div>
+      <div class="sticky" contenteditable="true"></div>
+   </div>
+
+  
+  <!-------------------------------------->
+  <!-------------------------------------->
+  <div class="img-container img-gone"></div>
+  <input type="file" class="pic"  id="pic">
+  <!-------------------------------------->
+
+ 
+    <script src="./scripts/script.js"></script>
+
+
+  </body>
+</html>
