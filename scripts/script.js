@@ -1,4 +1,5 @@
 //********************VARIABLES STARTS**************************//
+let index;
 let bars = document.querySelector(".bars");
 let tools = document.querySelector(".tools");
 let board = document.querySelector(".board");
@@ -25,6 +26,7 @@ let rightPanel = document.querySelector('.right-panel');
 let newPage = document.querySelector('.fa-file');
 let plusBtn = document.querySelector('.fa-plus');
 let pageContainer = document.querySelector('.page-container');
+
 // let undoMemory = [];
 let undoMemory = boardMemory[0].undoMemory;
 // let undoIndex = -1;
@@ -43,6 +45,27 @@ let zoomLevel = 1;
 let lastSelectedColor; //variable for previous seleced color of penc 
 let selectedColor = "black"; //to track color of current selected color
 //**********************************************************************//
+
+//********************PAGE and PlusBtn Functionality**********//
+plusBtn.addEventListener('click',function(){
+    count++;
+    let div = pageCreator();
+    pageContainer.appendChild(div);
+    let pagesArr = document.querySelectorAll('.page');
+    for(let i = 0; i < pagesArr.length; i++){
+    pagesArr[i].addEventListener('click',function(e){
+        // console.log();
+        index = e.currentTarget.getAttribute('number');
+        console.log(index);
+    });
+    }
+    
+});
+
+
+
+//**********************************************//
+
 
 
 // ********************page**Btn********************//
@@ -560,16 +583,14 @@ uploadBtn.addEventListener('click',function(){
 function pageCreator(){
     let div = document.createElement('div');
     div.classList.add('page');
+    let num = `${count}`;
+    div.setAttribute('number',num);
     div.innerText = `Page-${count+1}`;
     return div;
 }
 //**************************************//
 
-plusBtn.addEventListener('click',function(){
-    count++;
-    let div = pageCreator();
-    pageContainer.appendChild(div);
-});
+
 console.log(boardMemory);
 
 

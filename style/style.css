@@ -357,3 +357,8 @@ display: none;
   border: 1px solid white;
 }
 
+/* to remove scroll of whole page */
+*::-webkit-scrollbar{
+  display: none;
+  }
+
