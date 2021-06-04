@@ -284,13 +284,14 @@ undoBtn.addEventListener("click", function () {
     // else if (undoIndex == 0) {
     else if (boardMemory[0].undoIndex == 0) {
         // redoMemory.push(undoMemory.pop());
-        boardMemory[0].redoMemory.push(undoMemory.pop());
+        boardMemory[0].redoMemory.push(boardMemory[0].undoMemory.pop());
         // redoIndex++;
         boardMemory[0].redoIndex++;
         clearCanvas();
     }
     else {
         console.log("deleted");
+        console.log(boardMemory);
         // memoryIndex--;
         boardMemory[0].memoryIndex--;
         // memory.pop();
@@ -298,7 +299,7 @@ undoBtn.addEventListener("click", function () {
         // undoIndex--;
         boardMemory[0].undoIndex--;
         // redoMemory.push(undoMemory.pop());
-        boardMemory[0].redoMemory.push(undoMemory.pop());
+        boardMemory[0].redoMemory.push(boardMemory[0].undoMemory.pop());
         // redoIndex++;
         boardMemory[0].redoIndex++;
         // tool.putImageData(undoMemory[undoIndex], 0, 0);
@@ -316,6 +317,7 @@ redoBtn.addEventListener("click", function () {
     }
     else {
         console.log("redo");
+        console.log(boardMemory);
         // tool.putImageData(redoMemory[redoIndex], 0, 0);
         tool.putImageData(boardMemory[0].redoMemory[boardMemory[0].redoIndex], 0, 0);
         // redoIndex--;
@@ -534,4 +536,4 @@ uploadBtn.addEventListener('click',function(){
 
 //**************************************//
 
-console.log(boardMemory[0]);
+console.log(boardMemory);
