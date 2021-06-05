@@ -27,7 +27,7 @@ let rightPanel = document.querySelector(".right-panel");
 let newPage = document.querySelector(".fa-file");
 let plusBtn = document.querySelector(".fa-plus");
 let pageContainer = document.querySelector(".page-container");
-let recordingBtn = document.querySelector('.fa-desktop');
+let recordingBtn = document.querySelector('.fa-video');
 let leftPanel = document.querySelector('.left-panel');
 let undoMemory = boardMemory[index].undoMemory;
 let undoIndex = boardMemory[index].undoIndex;
@@ -543,6 +543,7 @@ let recStart = document.querySelector('.fa-desktop');
     });
     recSave.addEventListener('click',function(){
       downloadRecBtn.click();
+      location.reload();
     });
     let shouldStop = false;
     let stopped = false;
