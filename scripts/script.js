@@ -60,8 +60,7 @@ plusBtn.addEventListener("click", function () {
 
 //*****************Recording btn********************//
 recordingBtn.addEventListener('click',function(){
-  console.log("hogya-assign")
-  location.assign('recorder.html');
+  window.open('recorder.html');
 });
 //*************************************************//
 // ********************page**Btn********************//

@@ -33,16 +33,15 @@
 
         }
         .fa-desktop,.fa-save,.fa-stop{
-            color: green;
+            color: lightsalmon;
             font-size: 10vw;
         }
         .newBtn{
             height: 20vh;
         }
+        
     </style>
 </head>
-
-
 <body>
     <div class="container mt-3">
     <span><a id="download" style="display: none; opacity: 0;" ><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
@@ -61,10 +60,12 @@
             <i class="far fa-save"></i>
         </div>
     </div>
+    
 
     
 </body>
 <script>
+    let backBtn = document.querySelector('.back');
     let recStart = document.querySelector('.fa-desktop');
     let recStop = document.querySelector('.fa-stop');
     let recSave = document.querySelector('.fa-save');
@@ -74,6 +75,9 @@
     // console.log(downloadBtn);
     
 
+    // backBtn.addEventListener('click',function(){
+    //     location.assign('index.html');
+    // })
     recStart.addEventListener('click',function(){
         recBtn.click();
     });
