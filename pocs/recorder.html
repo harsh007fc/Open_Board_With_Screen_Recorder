@@ -4,25 +4,77 @@
     <title>
         Screen Recorder
     </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+    integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"
+    crossorigin="anonymous"
+  />
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            height: 100vh;
+            background-color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .container{
+            opacity: 0;
+        }
+        .fa-desktop,.fa-save,.fa-stop{
+            color: green;
+            font-size: 10vw;
+        }
+        .newBtn{
+            height: 20vh;
+        }
+    </style>
 </head>
+
 
 <body>
     <div class="container mt-3">
-    <span><a id="download" style="display: none;"><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
+    <span><a id="download" style="display: none;" ><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
     <button type="button" class="btn btn-danger" id="stop" disabled>Stop</button>
-    <button type="button" onclick="recordAudio()" class="btn btn-info">Record Audio</button>
-    <button type="button" onclick="recordVideo()" class="btn btn-info">Record Video</button>
     <button type="button" onclick="recordScreen()" class="btn btn-info">Record Screen</button>
-    <div class="p-5">
-        <video autoplay height='480' width="640" muted></video>
     </div>
+
+
+    <div class=" newBtn start-rec">
+        <i class="fas fa-desktop"></i>
+    </div>
+    <div class=" newBtn stop-rec">
+        <i class="fas fa-stop"></i>
+    </div>
+    <div class="newBtn save-rec">
+        <i class="far fa-save"></i>
     </div>
 </body>
 <script>
+    let recStart = document.querySelector('.fa-desktop');
+    let recStop = document.querySelector('.fa-stop');
+    let recSave = document.querySelector('.fa-save');
+    let recBtn = document.querySelector('[class="btn btn-info"]');
+    let downloadBtn = document.querySelector('#download');
+    let stopBtn = document.querySelector('[class="btn btn-danger"]');
+    // console.log(downloadBtn);
+    
+
+    recStart.addEventListener('click',function(){
+        recBtn.click();
+    });
+    recStop.addEventListener('click',function(){
+        stopBtn.click();
+    });
+    recSave.addEventListener('click',function(){
+        downloadBtn.click();
+    });
     let shouldStop = false;
     let stopped = false;
     const videoElement = document.getElementsByTagName("video")[0];
