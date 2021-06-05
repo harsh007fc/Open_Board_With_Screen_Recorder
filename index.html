@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drawing</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
@@ -100,6 +101,27 @@
       <div class="page-container">
         <div class="page" number="0">Page-1</div>
       </div>
+    </div>
+    <!---------------------------------->
+    <!--------------left panel------------------>
+    <div class="left-panel left-panel-hidden">
+      <div class="container mt-3">
+        <span><a id="download-rec" style="opacity: 0;" ><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
+        <button type="button" style="opacity: 0;"  class="btn btn-danger" id="stop" disabled>Stop</button>
+        <button type="button" style="opacity: 0;"  onclick="recordScreen()" class="btn btn-info">Record Screen</button>
+        </div>
+    
+        <div class="btn-container">
+            <div class=" newBtn start-rec">
+                <i class="fas fa-desktop"></i>
+            </div>
+            <div class=" newBtn stop-rec">
+                <i class="fas fa-stop"></i>
+            </div>
+            <div class="newBtn save-rec">
+                <i class="far fa-save"></i>
+            </div>
+        </div>
     </div>
     <!---------------------------------->
     <!--------------Sticky for inputs------------------->
