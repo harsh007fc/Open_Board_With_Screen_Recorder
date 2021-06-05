@@ -27,6 +27,7 @@ let rightPanel = document.querySelector(".right-panel");
 let newPage = document.querySelector(".fa-file");
 let plusBtn = document.querySelector(".fa-plus");
 let pageContainer = document.querySelector(".page-container");
+let recordingBtn = document.querySelector('.fa-desktop');
 let undoMemory = boardMemory[index].undoMemory;
 let undoIndex = boardMemory[index].undoIndex;
 let memory = boardMemory[index].memory;
@@ -57,6 +58,12 @@ plusBtn.addEventListener("click", function () {
 });
 //**********************************************//
 
+//*****************Recording btn********************//
+recordingBtn.addEventListener('click',function(){
+  console.log("hogya-assign")
+  location.assign('recorder.html');
+});
+//*************************************************//
 // ********************page**Btn********************//
 newPage.addEventListener("click", function () {
   rightPanel.classList.toggle("right-panel-hidden");

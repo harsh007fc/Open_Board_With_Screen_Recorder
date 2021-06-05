@@ -13,19 +13,24 @@
   />
     <style>
         *{
+            overflow: hidden;
             box-sizing: border-box;
         }
         body{
-            height: 100vh;
+            /* height: 100vh; */
             background-color: #333;
             margin: 0;
             padding: 0;
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: space-between; */
+        }
+        .btn-container{
+            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-        }
-        .container{
-            opacity: 0;
+            justify-content: space-around;
+
         }
         .fa-desktop,.fa-save,.fa-stop{
             color: green;
@@ -40,21 +45,24 @@
 
 <body>
     <div class="container mt-3">
-    <span><a id="download" style="display: none;" ><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
-    <button type="button" class="btn btn-danger" id="stop" disabled>Stop</button>
-    <button type="button" onclick="recordScreen()" class="btn btn-info">Record Screen</button>
+    <span><a id="download" style="display: none; opacity: 0;" ><button type="button" class="btn btn-primary mb-4"> Download</button></a></span>
+    <button type="button" style="opacity: 0;" class="btn btn-danger" id="stop" disabled>Stop</button>
+    <button type="button" style="opacity: 0;" onclick="recordScreen()" class="btn btn-info">Record Screen</button>
     </div>
 
+    <div class="btn-container">
+        <div class=" newBtn start-rec">
+            <i class="fas fa-desktop"></i>
+        </div>
+        <div class=" newBtn stop-rec">
+            <i class="fas fa-stop"></i>
+        </div>
+        <div class="newBtn save-rec">
+            <i class="far fa-save"></i>
+        </div>
+    </div>
 
-    <div class=" newBtn start-rec">
-        <i class="fas fa-desktop"></i>
-    </div>
-    <div class=" newBtn stop-rec">
-        <i class="fas fa-stop"></i>
-    </div>
-    <div class="newBtn save-rec">
-        <i class="far fa-save"></i>
-    </div>
+    
 </body>
 <script>
     let recStart = document.querySelector('.fa-desktop');
